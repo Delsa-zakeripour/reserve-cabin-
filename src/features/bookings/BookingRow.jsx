@@ -13,7 +13,7 @@ import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
 // import { useDeleteBooking } from "features/bookings/useDeleteBooking";
-// import { formatCurrency } from "utils/helpers";
+import { formatCurrency } from "../../utils/helpers";
 // import { formatDistanceFromNow } from "utils/helpers";
 // import { useCheckout } from "features/check-in-out/useCheckout";
 import { format, isToday } from "date-fns";
@@ -97,7 +97,7 @@ function BookingRow({
 
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
-      {/* <Amount>{formatCurrency(totalPrice)}</Amount> */}
+      <Amount>{formatCurrency(totalPrice)}</Amount>
 
       {/* VIDEO we could export this into own component... */}
       <Modal>
@@ -150,8 +150,8 @@ function BookingRow({
           />
         </Modal.Window>
       </Modal>
-
-      {/* <div>
+{/* 
+      <div>
         <ButtonWithConfirm
           title='Delete booking'
           description='Are you sure you want to delete this booking? This action can NOT be undone.'
@@ -169,4 +169,3 @@ function BookingRow({
 }
 
 export default BookingRow;
-
