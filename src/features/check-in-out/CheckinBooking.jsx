@@ -29,7 +29,7 @@ function CheckinBooking() {
   const [addBreakfast, setAddBreakfast] = useState(false);
 
   const { booking, isLoading } = useBooking();
-  const { mutate: checkin, isLoading: isCheckingIn } = useCheckin();
+  const { checkin, isLoading: isCheckingIn } = useCheckin();
   const moveBack = useMoveBack();
   const { isLoading: isLoadingSettings, settings } = useSettings();
 
@@ -47,23 +47,23 @@ function CheckinBooking() {
     numNights,
   } = booking;
 
-  // const optionalBreakfastPrice =
-  //   numNights * settings.breakfastPrice * numGuests;
+  const optionalBreakfastPrice =
+    // settings.breakfastPrice * numNights * numGuests; i don't know why the breakfastPrice dosn't work!!!
+    settings * numGuests * numNights;
 
-  // function handleCheckin() {
-  //   if (!confirmPaid) return;
-
-  //   if (addBreakfast)
-  //     checkin({
-  //       bookingId,
-  //       breakfast: {
-  //         hasBreakfast: true,
-  //         extrasPrice: optionalBreakfastPrice,
-  //         totalPrice: totalPrice + optionalBreakfastPrice,
-  //       },
-  //     });
-  //   else checkin({ bookingId, breakfast: {} });
-  // }
+  function handleCheckin() {
+    if (!confirmPaid) return;
+    if (addBreakfast)
+      checkin({
+        bookingId,
+        breakfast: {
+          hasBreakfast: true,
+          extrasPrice: optionalBreakfastPrice,
+          totalPrice: totalPrice + optionalBreakfastPrice,
+        },
+      });
+    else checkin({ bookingId, breakfast: {} });
+  }
 
   // We return a fragment so that these elements fit into the page's layout
   return (
@@ -76,7 +76,7 @@ function CheckinBooking() {
       <BookingDataBox booking={booking} />
 
       {/* LATER */}
-      {/* {!hasBreakfast && (
+      {!hasBreakfast && (
         <Box>
           <Checkbox
             checked={addBreakfast}
@@ -86,34 +86,34 @@ function CheckinBooking() {
             }}
             id="breakfast"
           >
-            Want to add breakfast for {formatCurrency(optionalBreakfastPrice)}?
+            Want to add breakfast for
+            {formatCurrency(optionalBreakfastPrice)}?
           </Checkbox>
         </Box>
-      )} */}
+      )}
 
       <Box>
         <Checkbox
           checked={confirmPaid}
           onChange={() => setConfirmPaid((confirm) => !confirm)}
           // If the guest has already paid online, we can't even undo this
-          // disabled={isCheckingIn || confirmPaid}
-          // id="confirm"
+          disabled={isCheckingIn || confirmPaid}
+          id="confirm"
         >
           I confirm that {guests.fullName} has paid the total amount of{" "}
           {formatCurrency(totalPrice)}
-          {/* {!addBreakfast
+          {!addBreakfast
             ? formatCurrency(totalPrice)
             : `${formatCurrency(
                 totalPrice + optionalBreakfastPrice
               )} (${formatCurrency(totalPrice)} + ${formatCurrency(
                 optionalBreakfastPrice
-              )} for breakfast)`} */}
+              )} for breakfast)`}
         </Checkbox>
       </Box>
 
       <ButtonGroup>
-        {/* <Button onClick={handleCheckin} disabled={isCheckingIn || !confirmPaid}> */}
-        <Button disabled={isCheckingIn || !confirmPaid}>
+        <Button onClick={handleCheckin} disabled={isCheckingIn || !confirmPaid}>
           Check in booking #{bookingId}
         </Button>
         <Button variation="secondary" onClick={moveBack}>
