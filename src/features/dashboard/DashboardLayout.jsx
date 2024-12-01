@@ -1,13 +1,10 @@
-import styled from 'styled-components';
-
-import DurationChart from 'features/dashboard/DurationChart';
-import SalesChart from 'features/dashboard/SalesChart';
-import Stats from 'features/dashboard/Stats';
-import TodayActivity from 'features/check-in-out/TodayActivity';
-import { useRecentBookings } from 'features/dashboard/useRecentBookings';
-import Spinner from 'ui/Spinner';
-import { useRecentStays } from './useRecentStays';
-import { useCabins } from 'features/cabins/useCabins';
+import styled from "styled-components";
+import { useRecentBooking } from "./useRecentBooking";
+import { useRecentStays } from "./useRecentStays";
+import { useCabins } from "../cabins/useCabin";
+import Spinner from "../../ui/Spinner";
+import Stats from "./Stats";
+import SalesChart from "./SalesChart";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -23,12 +20,13 @@ We need to distinguish between two types of data here:
 */
 
 function DashboardLayout() {
-  const { isLoading: isLoading1, bookings, numDays } = useRecentBookings();
-  const { isLoading: isLoading2, confirmedStays } = useRecentStays();
-  const { isLoading: isLoading3, cabins } = useCabins();
+  const { bookings, isLoading1, numDays } = useRecentBooking();
+
+  const { stays, isLoading2, confirmedStays } = useRecentStays();
+
+  const { cabins, isLoading: isLoading3 } = useCabins();
 
   if (isLoading1 || isLoading2 || isLoading3) return <Spinner />;
-
   return (
     <StyledDashboardLayout>
       <Stats
@@ -37,9 +35,9 @@ function DashboardLayout() {
         numDays={numDays}
         cabinCount={cabins.length}
       />
-      <TodayActivity />
-      <DurationChart confirmedStays={confirmedStays} />
-      <SalesChart bookings={bookings} numDays={numDays} />
+      <div></div>
+      <div></div>
+      <SalesChart numDays={numDays} bookings={bookings} />
     </StyledDashboardLayout>
   );
 }
