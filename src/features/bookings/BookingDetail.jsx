@@ -33,7 +33,7 @@ function BookingDetail() {
   const navigate = useNavigate();
 
   if (isLoading) return <Spinner />;
-  if (!booking) return <Empty resource="booking" />;
+  if (!booking) return <Empty resourceName="booking" />;
 
   const statusToTagName = {
     unconfirmed: "blue",
