@@ -20,8 +20,8 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
     defaultValue: isEditSession ? editValues : {},
   });
   const { errors } = formState;
-  console.log("errors", errors);
-  console.log("form state", formState);
+  // console.log("errors", errors);
+  // console.log("form state", formState);
 
   const queryClient = useQueryClient();
 
@@ -68,7 +68,8 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       );
     else
       createCabin(
-        { ...data, image: data.image[0] },
+        // { ...data, image: data.image[0] },
+        { ...data, image: image },
         {
           onSuccess: (data) => {
             reset();
